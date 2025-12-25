@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лерочке, с Новым годом</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: 'Comfortaa', cursive;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(#dbefff, #ffffff);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.snow {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 18px;
+    animation: fall linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh); }
+}
+
+.container {
+    width: 92%;
+    max-width: 420px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+}
+
+.decor {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.text {
+    font-size: 20px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    min-height: 100px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 16px;
+    border: none;
+    background: #ff6b81;
+    color: white;
+    margin-top: 10px;
+}
+
+.choice button {
+    background: #6c5ce7;
+}
+
+.bottom {
+    margin-top: 18px;
+    font-size: 20px;
+    font-family: 'Pacifico', cursive;
+    color: #c0392b;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Финальный экран */
+.final {
+    position: fixed;
+    inset: 0;
+    background: rgba(90, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s;
+}
+
+.final.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.heart {
+    font-size: 100px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+.final-text {
+    font-size: 24px;
+    margin-top: 16px;
+    max-width: 300px;
+}
+</style>
+</head>
+<body>
+
+<!-- СНЕГ -->
+<script>
+for (let i = 0; i < 40; i++) {
+    let snow = document.createElement("div");
+    snow.className = "snow";
+    snow.innerHTML = "❄";
+    snow.style.left = Math.random() * 100 + "vw";
+    snow.style.animationDuration = 5 + Math.random() * 5 + "s";
+    snow.style.fontSize = 14 + Math.random() * 12 + "px";
+    document.body.appendChild(snow);
+}
+</script>
+
+<div class="container">
+    <div class="decor">🎄🔔🍪</div>
+
+    <div class="text" id="text"></div>
+
+    <button id="mainBtn">Дальше</button>
+
+    <div class="choice hidden" id="choice">
+        <button onclick="answer(1)">Это Алиска</button>
+        <button onclick="answer(2)">Это Сёма</button>
+        <button onclick="answer(3)">Может быть это ложка?</button>
+    </div>
+
+    <div class="bottom">ПИТЕР ❤ ТАМБОВ<br>я всегда рядом</div>
+</div>
+
+<div class="final" id="final">
+    <div class="heart">❤️</div>
+    <div class="final-text">
+        С новым годом моя любовь,<br>
+        я скоро буду рядом
+    </div>
+</div>
+
+<script>
+const texts = [
+    "Привет, бусинка 💫<br>Я надеюсь, у тебя всё хорошо.",
+    "Скоро Новый год 🎄<br>И ты правда думала, что я оставлю тебя без подарочка?",
+    "Я надеюсь, ты будешь очень рада,<br>что у нас появился новый друг… или подруга 🤭",
+    "Как думаешь, что это?"
+];
+
+let step = 0;
+const textEl = document.getElementById("text");
+const btn = document.getElementById("mainBtn");
+const choice = document.getElementById("choice");
+
+textEl.innerHTML = texts[0];
+
+btn.onclick = () => {
+    step++;
+    if (step < texts.length - 1) {
+        textEl.innerHTML = texts[step];
+    } else {
+        textEl.innerHTML = texts[step];
+        btn.classList.add("hidden");
+        choice.classList.remove("hidden");
+    }
+};
+
+function answer(n) {
+    if (n === 1) {
+        document.getElementById("final").classList.add("show");
+    }
+    if (n === 2) {
+        textEl.innerHTML = "Семён появится чуть позже 😉<br>А пока подумай ещё раз";
+        resetChoice();
+    }
+    if (n === 3) {
+        textEl.innerHTML = "Это же я хочу… 🥄😄";
+        resetChoice();
+    }
+}
+
+function resetChoice() {
+    choice.classList.add("hidden");
+    btn.classList.remove("hidden");
+    btn.innerText = "Вернуться";
+    step = texts.length - 2;
+}
+</script>
+
+</body>
+</html>
